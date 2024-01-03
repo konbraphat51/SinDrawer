@@ -1,0 +1,6 @@
+[submodule "HotSoupScript"]
+	path = HotSoupScript
+	url = https://github.com/konbraphat51/HotSoupScript
+[submodule "HotSoupScript_Physics"]
+	path = HotSoupScript_Physics
+	url = https://github.com/konbraphat51/HotSoupScript_Physics

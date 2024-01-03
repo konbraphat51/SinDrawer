@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"HotSoupScript/*": ["./HotSoupScript/Public/*"],
+			"HotSoupScript_Physics/*": ["./HotSoupScript_Physics/*"]
+		}
+	},
+	"include": [
+		"Src/**/*",
+		"HotSoupScript/Public/**/*",
+		"HotSoupScript_Physics/**/*"
+	]
+}
