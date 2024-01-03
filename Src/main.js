@@ -1,6 +1,6 @@
 SetCanvasSize(1280, 780)
 
-var textSeed = ""
+var textSeed = 0
 var color = document.getElementById("color").value
 
 class Sin {
@@ -51,12 +51,13 @@ function Func(x, sins) {
 
 function MakeSinsRandomly(amount) {
 	const sins = []
+	const random = new Random(textSeed)
 	for (let i = 0; i < amount; i++) {
 		sins.push(
 			new Sin(
-				Math.random() * 0.5 + 2.5,
-				Math.random() * 0.1,
-				Math.random() * 100,
+				random.nextFloat() * 0.5 + 2.5,
+				random.nextFloat() * 0.1,
+				random.nextFloat() * 100,
 			),
 		)
 	}
@@ -65,7 +66,8 @@ function MakeSinsRandomly(amount) {
 }
 
 function OnTextChanged(event) {
-	text = event.target.value
+	const text = event.target.value
+	textSeed = TextToSeed(text)
 
 	Draw()
 }
@@ -74,6 +76,15 @@ function OnColorChanged(event) {
 	color = event.target.value
 
 	Draw()
+}
+
+function TextToSeed(text) {
+	let seed = 0
+	for (let i = 0; i < text.length; i++) {
+		seed += text.charCodeAt(i)
+	}
+
+	return seed
 }
 
 function Draw() {
