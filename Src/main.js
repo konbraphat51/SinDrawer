@@ -123,3 +123,10 @@ function Draw() {
 async function main() {
 	Draw()
 }
+
+function SaveCanvas() {
+	var link = document.createElement("a")
+	link.href = __HSS_GRAPHICS_PRIVATE.canvas.toDataURL()
+	link.download = "graph.png"
+	link.click()
+}
