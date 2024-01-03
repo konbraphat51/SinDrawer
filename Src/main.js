@@ -39,16 +39,25 @@ async function main() {
 
 	let plotted = []
 
-	const plotN = 900
+	const plotN = 780 + 1
 	for (let i = 0; i < plotN; i++) {
 		plotted.push(Func(i, sins))
 	}
 
-	for (let i = 1; i < plotN; i++) {
-		let xPrev = plotted[i - 1] + 1220
-		let yPrev = i
-		let xCur = plotted[i] + 1220
-		let yCur = i + 1
-		DrawLine(xPrev, yPrev, xCur, yCur, 3)
+	let plots = []
+
+	for (let i = 0; i < plotN; i++) {
+		let x = plotted[i] + 1220
+		let y = i
+		plots.push([x, y])
 	}
+
+	const rightBottom = GetCanvasSize()
+	const rightTop = [rightBottom[0], 0]
+
+	plots.push(rightBottom)
+	plots.push(rightTop)
+
+	let polygon = new Polygon(plots, [0, 0], 0, 1)
+	polygon.Draw()
 }
