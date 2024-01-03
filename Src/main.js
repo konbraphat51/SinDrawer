@@ -1,27 +1,38 @@
-async function main() {
-    await Sleep(1000)
-
-    DrawText("Hello World!", 100, 100)
-
-    await Sleep(1000)
-    
-    SetColor("red")
-    SetFont("50px serif")
-    DrawText("Let's Coding!", 100, 200)
-
-    await Sleep(1000)
-
-    
-    const chick = (await LoadImages(["/Assets/twimoji_chick.png"]))[0]
-    
-    while (true){
-        //clear
-        SetColor("white")
-        DrawRect(0, 0, GetCanvasSize()[0], GetCanvasSize()[1])
-
-        DrawImage(chick, GetMouseX(), GetMouseY(), 100, 100)
-    
-        //cool time
-        await Sleep(1000/16)
-    }
+class Sin {
+	constructor(amplitude, angularVelocity, phase) {
+		this.amplitude = amplitude
+		this.angularVelocity = angularVelocity
+		this.phase = phase
+	}
 }
+
+function Func(x, sins) {
+	let value = 0
+	for (let i = 0; i < sins.length; i++) {
+		value +=
+			sins[i].amplitude * Math.sin(sins[i].angularVelocity * x + sins[i].phase)
+	}
+
+	return value
+}
+
+function MakeSinsRandomly(amount) {
+	const sins = []
+	for (let i = 0; i < amount; i++) {
+		sins.push(
+			new Sin(
+				Math.random() * 0.5 + 1,
+				Math.random() * 100,
+				Math.random() * 100,
+			),
+		)
+	}
+
+	return sins
+}
+
+async function main() {
+	const sinsN = 3
+	const sins = MakeSinsRandomly(sinsN)
+
+
