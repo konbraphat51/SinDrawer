@@ -1,4 +1,4 @@
-SetCanvasSize(1200, 900)
+SetCanvasSize(1280, 780)
 
 class Sin {
 	constructor(amplitude, angularVelocity, phase) {
@@ -45,9 +45,9 @@ async function main() {
 	}
 
 	for (let i = 1; i < plotN; i++) {
-		let xPrev = plotted[i - 1] + 1150
+		let xPrev = plotted[i - 1] + 1220
 		let yPrev = i
-		let xCur = plotted[i] + 1150
+		let xCur = plotted[i] + 1220
 		let yCur = i + 1
 		DrawLine(xPrev, yPrev, xCur, yCur, 3)
 	}
