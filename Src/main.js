@@ -1,6 +1,6 @@
 SetCanvasSize(1280, 780)
 
-var text = ""
+var textSeed = ""
 var color = document.getElementById("color").value
 
 class Sin {
@@ -8,6 +8,34 @@ class Sin {
 		this.amplitude = amplitude
 		this.angularVelocity = angularVelocity
 		this.phase = phase
+	}
+}
+
+//https://sbfl.net/blog/2017/06/01/javascript-reproducible-random/
+class Random {
+	constructor(seed = 88675123) {
+		this.x = 123456789
+		this.y = 362436069
+		this.z = 521288629
+		this.w = seed
+	}
+
+	// XorShift
+	next() {
+		let t
+
+		t = this.x ^ (this.x << 11)
+		this.x = this.y
+		this.y = this.z
+		this.z = this.w
+		return (this.w = this.w ^ (this.w >>> 19) ^ (t ^ (t >>> 8)))
+	}
+
+	// get 0-1 float
+	nextFloat() {
+		const absolute = Math.abs(this.next())
+		const r = absolute % 1000
+		return r / 1000
 	}
 }
 
