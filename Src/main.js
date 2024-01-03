@@ -1,3 +1,5 @@
+SetCanvasSize(1200, 900)
+
 class Sin {
 	constructor(amplitude, angularVelocity, phase) {
 		this.amplitude = amplitude
@@ -21,8 +23,8 @@ function MakeSinsRandomly(amount) {
 	for (let i = 0; i < amount; i++) {
 		sins.push(
 			new Sin(
-				Math.random() * 0.5 + 1,
-				Math.random() * 100,
+				Math.random() * 0.5 + 1.5,
+				Math.random() * 0.7,
 				Math.random() * 100,
 			),
 		)
@@ -35,4 +37,18 @@ async function main() {
 	const sinsN = 3
 	const sins = MakeSinsRandomly(sinsN)
 
+	let plotted = []
 
+	const plotN = 900
+	for (let i = 0; i < plotN; i++) {
+		plotted.push(Func(i, sins))
+	}
+
+	for (let i = 1; i < plotN; i++) {
+		let xPrev = plotted[i - 1] + 1150
+		let yPrev = i
+		let xCur = plotted[i] + 1150
+		let yCur = i + 1
+		DrawLine(xPrev, yPrev, xCur, yCur, 3)
+	}
+}
