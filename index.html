@@ -6,10 +6,23 @@
 		<title>Playground</title>
 	</head>
 	<body>
-		<canvas id="canvas" width="800" height="600"></canvas>
+		<canvas id="canvas" width="800" height="600"></canvas> <br />
 
 		<script src="HotSoupScript/Private/ModulesLoader.js"></script>
 		<script src="HotSoupScript_Physics/Private/ModulesLoader.js"></script>
+
+		<label for="text">Text</label>
+		<input type="text" id="text" onchange="OnTextChanged(event)" />
+
+		<br />
+
+		<label for="color">Color</label>
+		<input
+			type="color"
+			id="color"
+			value="#58e08e"
+			onchange="OnColorChanged(event)"
+		/>
 
 		<!-- Write your main code here -->
 		<script src="Src/main.js"></script>

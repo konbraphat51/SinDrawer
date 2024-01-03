@@ -1,5 +1,8 @@
 SetCanvasSize(1280, 780)
 
+var text = ""
+var color = document.getElementById("color").value
+
 class Sin {
 	constructor(amplitude, angularVelocity, phase) {
 		this.amplitude = amplitude
@@ -23,8 +26,8 @@ function MakeSinsRandomly(amount) {
 	for (let i = 0; i < amount; i++) {
 		sins.push(
 			new Sin(
-				Math.random() * 0.5 + 1.5,
-				Math.random() * 0.7,
+				Math.random() * 0.5 + 2.5,
+				Math.random() * 0.1,
 				Math.random() * 100,
 			),
 		)
@@ -33,11 +36,22 @@ function MakeSinsRandomly(amount) {
 	return sins
 }
 
-function Draw() {
-	SetColor("#FFFFFF00")
-	DrawRect(0, 0, 1280, 780)
+function OnTextChanged(event) {
+	text = event.target.value
 
-	SetColor("#000000FF")
+	Draw()
+}
+
+function OnColorChanged(event) {
+	color = event.target.value
+
+	Draw()
+}
+
+function Draw() {
+	__HSS_GRAPHICS_PRIVATE.ctx.clearRect(0, 0, 1280, 780)
+
+	SetColor(color)
 
 	const sinsN = 3
 	const sins = MakeSinsRandomly(sinsN)
