@@ -33,7 +33,12 @@ function MakeSinsRandomly(amount) {
 	return sins
 }
 
-async function main() {
+function Draw() {
+	SetColor("#FFFFFF00")
+	DrawRect(0, 0, 1280, 780)
+
+	SetColor("#000000FF")
+
 	const sinsN = 3
 	const sins = MakeSinsRandomly(sinsN)
 
@@ -60,4 +65,8 @@ async function main() {
 
 	let polygon = new Polygon(plots, [0, 0], 0, 1)
 	polygon.Draw()
+}
+
+async function main() {
+	Draw()
 }
