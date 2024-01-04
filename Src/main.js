@@ -208,7 +208,7 @@ function Draw() {
 		]
 		polygonAtLast = true
 	} else if (position == "rightTopFill") {
-		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
+		plots = _PlotFlat(3, 1300, 10, 7, 0.1, 0.6, 0)
 		start = [1000, 0]
 		direction = [2 ** -0.5, 2 ** -0.5]
 		lastAdding = [[RIGHT, 0]]
