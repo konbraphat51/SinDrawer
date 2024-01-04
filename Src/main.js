@@ -2,6 +2,7 @@ SetCanvasSize(1280, 780)
 
 var textSeed = 0
 var color = document.getElementById("color").value
+var position = document.getElementById("position").value
 
 class Sin {
 	constructor(amplitude, angularVelocity, phase) {
@@ -78,6 +79,12 @@ function OnColorChanged(event) {
 	Draw()
 }
 
+function OnPositionChanged(event) {
+	position = event.target.value
+
+	Draw()
+}
+
 function TextToSeed(text) {
 	let seed = 0
 	for (let i = 0; i < text.length; i++) {
@@ -92,6 +99,14 @@ function Draw() {
 
 	SetColor(color)
 
+	if (position == "right") {
+		DrawRight()
+	} else if (position == "rightTop") {
+		DrawRightTop()
+	}
+}
+
+function DrawRight() {
 	const sinsN = 3
 	const sins = MakeSinsRandomly(sinsN)
 
@@ -114,6 +129,48 @@ function Draw() {
 	const rightTop = [rightBottom[0], 0]
 
 	plots.push(rightBottom)
+	plots.push(rightTop)
+
+	let polygon = new Polygon(plots, [0, 0], 0, 1)
+	polygon.Draw()
+}
+
+function DrawRightTop() {
+	const sinsN = 3
+	const sins = MakeSinsRandomly(sinsN)
+
+	let plotted = []
+
+	const plotN = 500
+	for (let i = 0; i < plotN; i++) {
+		plotted.push(Func(i, sins))
+	}
+
+	let plots = []
+
+	let directionX = Math.sqrt(2) / 4
+	let directionY = Math.sqrt(2) / 4
+
+	let perpX = -directionY * 2
+	let perpY = directionX * 2
+
+	let xBase = 1280 - 150
+	let yBase = 0
+	let cnt = 0
+	while (xBase < 1280 && yBase < 780) {
+		let x = plotted[cnt] * perpX + xBase
+		let y = plotted[cnt] * perpY + yBase
+
+		xBase += directionX
+		yBase += directionY
+
+		cnt++
+
+		plots.push([x, y])
+	}
+
+	const rightTop = [GetCanvasSize()[0], 0]
+
 	plots.push(rightTop)
 
 	let polygon = new Polygon(plots, [0, 0], 0, 1)
