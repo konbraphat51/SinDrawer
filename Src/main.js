@@ -146,7 +146,7 @@ function DrawRightFill() {
 
 function DrawRightTopFill() {
 	const sinsN = 3
-	const sins = MakeSinsRandomly(sinsN)
+	const sins = MakeSinsRandomly(sinsN, 3, 0.5, 0.15, 0.6)
 
 	let plotted = []
 
