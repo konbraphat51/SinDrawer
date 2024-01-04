@@ -214,8 +214,8 @@ function Draw() {
 		lastAdding = [[RIGHT, 0]]
 		polygonAtLast = true
 	} else if (position == "top") {
-		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
-		start = [0, 30]
+		plots = _PlotFlat(6, 1300, 4, 1, 0.05, 0.4, 6)
+		start = [0, 100]
 		direction = [1, 0]
 	} else if (position == "topFill") {
 		plots = _PlotFlat(3, 1300, 10, 5, 0.01, 0.1, 0)
