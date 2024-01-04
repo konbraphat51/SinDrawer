@@ -102,14 +102,14 @@ function Draw() {
 
 	SetColor(color)
 
-	if (position == "right") {
-		DrawRight()
-	} else if (position == "rightTop") {
-		DrawRightTop()
+	if (position == "rightFill") {
+		DrawRightFill()
+	} else if (position == "rightTopFill") {
+		DrawRightTopFill()
 	}
 }
 
-function DrawRight() {
+function DrawRightFill() {
 	const sinsN = 3
 	const sins = MakeSinsRandomly(sinsN)
 
@@ -138,7 +138,7 @@ function DrawRight() {
 	polygon.Draw()
 }
 
-function DrawRightTop() {
+function DrawRightTopFill() {
 	const sinsN = 3
 	const sins = MakeSinsRandomly(sinsN)
 
