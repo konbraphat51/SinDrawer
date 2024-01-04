@@ -103,6 +103,31 @@ function TextToSeed(text) {
 	return seed
 }
 
+function Plot(
+	sinN,
+	amplitudeWidth,
+	amplitudeMin,
+	angularVelocityMax,
+	phaseShiftMax,
+) {
+	const sins = MakeSinsRandomly(
+		sinN,
+		amplitudeWidth,
+		amplitudeMin,
+		angularVelocityMax,
+		phaseShiftMax,
+	)
+
+	let plotted = []
+
+	const plotN = 500
+	for (let i = 0; i < plotN; i++) {
+		plotted.push(Func(i, sins))
+	}
+
+	return plotted
+}
+
 function Draw() {
 	__HSS_GRAPHICS_PRIVATE.ctx.clearRect(0, 0, 1280, 780)
 
@@ -112,27 +137,15 @@ function Draw() {
 		DrawRightFill()
 	} else if (position == "rightTopFill") {
 		DrawRightTopFill()
+	} else if (position == "top") {
+		DrawTop()
 	}
 }
 
 function DrawRightFill() {
 	const sinsN = 3
-	const sins = MakeSinsRandomly(sinsN, 5, 2, 0.2, 0.1)
 
-	let plotted = []
-
-	const plotN = 780 + 1
-	for (let i = 0; i < plotN; i++) {
-		plotted.push(Func(i, sins))
-	}
-
-	let plots = []
-
-	for (let i = 0; i < plotN; i++) {
-		let x = plotted[i] + 1220
-		let y = i
-		plots.push([x, y])
-	}
+	let plots = Plot(sinsN, 5, 2, 0.2, 0.1)
 
 	const rightBottom = GetCanvasSize()
 	const rightTop = [rightBottom[0], 0]
@@ -146,14 +159,8 @@ function DrawRightFill() {
 
 function DrawRightTopFill() {
 	const sinsN = 3
-	const sins = MakeSinsRandomly(sinsN, 3, 0.5, 0.15, 0.6)
 
-	let plotted = []
-
-	const plotN = 500
-	for (let i = 0; i < plotN; i++) {
-		plotted.push(Func(i, sins))
-	}
+	let plotted = Plot(sinsN, 5, 2, 0.2, 0.1)
 
 	let plots = []
 
@@ -184,6 +191,75 @@ function DrawRightTopFill() {
 
 	let polygon = new Polygon(plots, [0, 0], 0, 1)
 	polygon.Draw()
+}
+
+function DrawTop() {
+	const sinsN = 3
+
+	let plotted = Plot(sinsN, 3, 0.5, 0.15, 0.6)
+
+	let plots = []
+
+	let directionX = Math.sqrt(2) / 4
+	let directionY = Math.sqrt(2) / 4
+
+	let perpX = -directionY * 2
+	let perpY = directionX * 2
+
+	let xBase = 1280 - 150
+	let yBase = 0
+	let cnt = 0
+	while (xBase < 1280 && yBase < 780) {
+		let x = plotted[cnt] * perpX + xBase
+		let y = plotted[cnt] * perpY + yBase
+
+		xBase += directionX
+		yBase += directionY
+
+		cnt++
+
+		plots.push([x, y])
+	}
+
+	const rightTop = [GetCanvasSize()[0], 0]
+
+	plots.push(rightTop)
+
+	let polygon = new Polygon(plots, [0, 0], 0, 1)
+	polygon.Draw()
+}
+
+function DrawByVector(start, direction, plots) {
+	//normalize
+	const directionNorm = (direction ** 2 + direction ** 2) ** 0.5
+	const directionX = direction[0] / directionNorm
+	const directionY = direction[1] / directionNorm
+
+	const perpX = -directionY
+	const perpY = directionX
+
+	let xBase = start[0]
+	let yBase = start[1]
+
+	const RIGHT = GetCanvasSize()[0]
+	const BOTTOM = GetCanvasSize()[1]
+
+	let plotted = []
+	while (0 <= xBase && xBase <= RIGHT && 0 <= yBase && yBase <= BOTTOM) {
+		//plot
+		let x = plots[cnt] * perpX + xBase
+		let y = plots[cnt] * perpY + yBase
+
+		plotted.push([x, y])
+
+		//move
+		xBase += directionX
+		yBase += directionY
+
+		cnt++
+	}
+
+	return plotted
 }
 
 async function main() {
