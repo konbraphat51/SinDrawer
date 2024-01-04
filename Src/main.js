@@ -53,15 +53,21 @@ function Func(x, sins) {
 	return value
 }
 
-function MakeSinsRandomly(amount) {
+function MakeSinsRandomly(
+	amount,
+	amplitudeWidth = 2.5,
+	amplitudeMin = 0.1,
+	angularVelocityMax = 0.2,
+	phaseShiftMax = 2 * Math.PI,
+) {
 	const sins = []
 	const random = new Random(textSeed)
 	for (let i = 0; i < amount; i++) {
 		sins.push(
 			new Sin(
-				random.nextFloat() * 0.5 + 2.5,
-				random.nextFloat() * 0.1,
-				random.nextFloat() * 100,
+				random.nextFloat() * amplitudeWidth + amplitudeMin,
+				random.nextFloat() * angularVelocityMax,
+				random.nextFloat() * phaseShiftMax,
 			),
 		)
 	}
@@ -111,7 +117,7 @@ function Draw() {
 
 function DrawRightFill() {
 	const sinsN = 3
-	const sins = MakeSinsRandomly(sinsN)
+	const sins = MakeSinsRandomly(sinsN, 5, 2, 0.2, 0.1)
 
 	let plotted = []
 
