@@ -6,6 +6,7 @@ const LEFT = 0
 const RIGHT = GetCanvasSize()[0]
 
 var textSeed = 0
+var textSeedUnedited = 0
 var color = document.getElementById("color").value
 var position = document.getElementById("position").value
 
@@ -82,7 +83,7 @@ function MakeSinsRandomly(
 
 function OnTextChanged(event) {
 	const text = event.target.value
-	textSeed = TextToSeed(text)
+	textSeed = textSeedUnedited = TextToSeed(text)
 
 	Draw()
 }
