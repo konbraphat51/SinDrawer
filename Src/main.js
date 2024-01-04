@@ -103,8 +103,9 @@ function TextToSeed(text) {
 	return seed
 }
 
-function Plot(
+function _PlotFlat(
 	sinN,
+	plotN,
 	amplitudeWidth,
 	amplitudeMin,
 	angularVelocityMax,
@@ -120,9 +121,47 @@ function Plot(
 
 	let plotted = []
 
-	const plotN = 500
 	for (let i = 0; i < plotN; i++) {
 		plotted.push(Func(i, sins))
+	}
+	return plotted
+}
+
+function _PlotByVector(start, direction, plots) {
+	//normalize
+	const directionNorm = (direction[0] ** 2 + direction[1] ** 2) ** 0.5
+	const directionX = direction[0] / directionNorm
+	const directionY = direction[1] / directionNorm
+
+	const perpX = -directionY
+	const perpY = directionX
+
+	let xBase = start[0]
+	let yBase = start[1]
+
+	const RIGHT = GetCanvasSize()[0]
+	const BOTTOM = GetCanvasSize()[1]
+
+	let plotted = []
+	let cnt = 0
+	while (
+		0 <= xBase &&
+		xBase <= RIGHT &&
+		0 <= yBase &&
+		yBase <= BOTTOM &&
+		cnt < plots.length
+	) {
+		//plot
+		let x = plots[cnt] * perpX + xBase
+		let y = plots[cnt] * perpY + yBase
+
+		plotted.push([x, y])
+
+		//move
+		xBase += directionX
+		yBase += directionY
+
+		cnt++
 	}
 
 	return plotted
@@ -145,7 +184,7 @@ function Draw() {
 function DrawRightFill() {
 	const sinsN = 3
 
-	let plots = Plot(sinsN, 5, 2, 0.2, 0.1)
+	let plots = _PlotFlat(sinsN, 5, 2, 0.2, 0.1)
 
 	const rightBottom = GetCanvasSize()
 	const rightTop = [rightBottom[0], 0]
@@ -160,7 +199,7 @@ function DrawRightFill() {
 function DrawRightTopFill() {
 	const sinsN = 3
 
-	let plotted = Plot(sinsN, 5, 2, 0.2, 0.1)
+	let plotted = _PlotFlat(sinsN, 5, 2, 0.2, 0.1)
 
 	let plots = []
 
@@ -194,72 +233,21 @@ function DrawRightTopFill() {
 }
 
 function DrawTop() {
-	const sinsN = 3
+	const curve = PlotTop()
 
-	let plotted = Plot(sinsN, 3, 0.5, 0.15, 0.6)
-
-	let plots = []
-
-	let directionX = Math.sqrt(2) / 4
-	let directionY = Math.sqrt(2) / 4
-
-	let perpX = -directionY * 2
-	let perpY = directionX * 2
-
-	let xBase = 1280 - 150
-	let yBase = 0
-	let cnt = 0
-	while (xBase < 1280 && yBase < 780) {
-		let x = plotted[cnt] * perpX + xBase
-		let y = plotted[cnt] * perpY + yBase
-
-		xBase += directionX
-		yBase += directionY
-
-		cnt++
-
-		plots.push([x, y])
+	for (let x = 0; x < curve.length - 1; x++) {
+		DrawLine(curve[x], curve[x + 1])
 	}
-
-	const rightTop = [GetCanvasSize()[0], 0]
-
-	plots.push(rightTop)
-
-	let polygon = new Polygon(plots, [0, 0], 0, 1)
-	polygon.Draw()
 }
 
-function DrawByVector(start, direction, plots) {
-	//normalize
-	const directionNorm = (direction ** 2 + direction ** 2) ** 0.5
-	const directionX = direction[0] / directionNorm
-	const directionY = direction[1] / directionNorm
+function PlotTop() {
+	const sinsN = 3
 
-	const perpX = -directionY
-	const perpY = directionX
+	let plotted = _PlotFlat(sinsN, 1300, 3, 0.5, 0.15, 0.6)
 
-	let xBase = start[0]
-	let yBase = start[1]
+	let curve = _PlotByVector([0, 30], [1, 0], plotted)
 
-	const RIGHT = GetCanvasSize()[0]
-	const BOTTOM = GetCanvasSize()[1]
-
-	let plotted = []
-	while (0 <= xBase && xBase <= RIGHT && 0 <= yBase && yBase <= BOTTOM) {
-		//plot
-		let x = plots[cnt] * perpX + xBase
-		let y = plots[cnt] * perpY + yBase
-
-		plotted.push([x, y])
-
-		//move
-		xBase += directionX
-		yBase += directionY
-
-		cnt++
-	}
-
-	return plotted
+	return curve
 }
 
 async function main() {
