@@ -167,87 +167,41 @@ function _PlotByVector(start, direction, plots) {
 	return plotted
 }
 
+function _DrawCurve(curve, lineWidth = 3) {
+	for (let i = 0; i < curve.length - 1; i++) {
+		DrawLine(
+			curve[i][0],
+			curve[i][1],
+			curve[i + 1][0],
+			curve[i + 1][1],
+			lineWidth,
+		)
+	}
+}
+
 function Draw() {
 	__HSS_GRAPHICS_PRIVATE.ctx.clearRect(0, 0, 1280, 780)
 
 	SetColor(color)
 
+	let plots = []
+	let start = []
+	let direction = []
 	if (position == "rightFill") {
-		DrawRightFill()
+		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
+		start = [1230, 0]
+		direction = [0, 1]
 	} else if (position == "rightTopFill") {
 		DrawRightTopFill()
 	} else if (position == "top") {
-		DrawTop()
-	}
-}
-
-function DrawRightFill() {
-	const sinsN = 3
-
-	let plots = _PlotFlat(sinsN, 5, 2, 0.2, 0.1)
-
-	const rightBottom = GetCanvasSize()
-	const rightTop = [rightBottom[0], 0]
-
-	plots.push(rightBottom)
-	plots.push(rightTop)
-
-	let polygon = new Polygon(plots, [0, 0], 0, 1)
-	polygon.Draw()
-}
-
-function DrawRightTopFill() {
-	const sinsN = 3
-
-	let plotted = _PlotFlat(sinsN, 5, 2, 0.2, 0.1)
-
-	let plots = []
-
-	let directionX = Math.sqrt(2) / 4
-	let directionY = Math.sqrt(2) / 4
-
-	let perpX = -directionY * 2
-	let perpY = directionX * 2
-
-	let xBase = 1280 - 150
-	let yBase = 0
-	let cnt = 0
-	while (xBase < 1280 && yBase < 780) {
-		let x = plotted[cnt] * perpX + xBase
-		let y = plotted[cnt] * perpY + yBase
-
-		xBase += directionX
-		yBase += directionY
-
-		cnt++
-
-		plots.push([x, y])
+		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
+		start = [0, 30]
+		direction = [1, 0]
 	}
 
-	const rightTop = [GetCanvasSize()[0], 0]
+	let curve = _PlotByVector(start, direction, plots)
 
-	plots.push(rightTop)
-
-	let polygon = new Polygon(plots, [0, 0], 0, 1)
-	polygon.Draw()
-}
-
-function DrawTop() {
-	const curve = PlotTop()
-
-	for (let x = 0; x < curve.length - 1; x++) {
-		DrawLine(curve[x], curve[x + 1])
-	}
-}
-
-function PlotTop() {
-	const sinsN = 3
-
-	let plotted = _PlotFlat(sinsN, 1300, 3, 0.5, 0.15, 0.6)
-
-	let curve = _PlotByVector([0, 30], [1, 0], plotted)
-
-	return curve
+	_DrawCurve(curve)
 }
 
 async function main() {
