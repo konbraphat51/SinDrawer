@@ -63,7 +63,8 @@ function MakeSinsRandomly(
 	amount,
 	amplitudeWidth = 2.5,
 	amplitudeMin = 0.1,
-	angularVelocityMax = 0.2,
+	angularVelocityWidth = 0.2,
+	angularVelocityMin = 0.05,
 	phaseShiftMax = 2 * Math.PI,
 ) {
 	const sins = []
@@ -72,7 +73,7 @@ function MakeSinsRandomly(
 		sins.push(
 			new Sin(
 				random.nextFloat() * amplitudeWidth + amplitudeMin,
-				random.nextFloat() * angularVelocityMax,
+				random.nextFloat() * angularVelocityWidth + angularVelocityMin,
 				random.nextFloat() * phaseShiftMax,
 			),
 		)
@@ -114,14 +115,16 @@ function _PlotFlat(
 	plotN,
 	amplitudeWidth,
 	amplitudeMin,
-	angularVelocityMax,
+	angularVelocityWidth,
+	angularVelocityMin,
 	phaseShiftMax,
 ) {
 	const sins = MakeSinsRandomly(
 		sinN,
 		amplitudeWidth,
 		amplitudeMin,
-		angularVelocityMax,
+		angularVelocityWidth,
+		angularVelocityMin,
 		phaseShiftMax,
 	)
 
@@ -196,8 +199,8 @@ function Draw() {
 	let lastAdding = []
 	let polygonAtLast = false
 	if (position == "rightFill") {
-		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
-		start = [1230, 0]
+		plots = _PlotFlat(3, 1300, 4, 1, 0.5, 0.3)
+		start = [1200, 0]
 		direction = [0, 1]
 		lastAdding = [
 			[RIGHT, DOWN],
@@ -206,7 +209,7 @@ function Draw() {
 		polygonAtLast = true
 	} else if (position == "rightTopFill") {
 		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
-		start = [1100, 0]
+		start = [1000, 0]
 		direction = [2 ** -0.5, 2 ** -0.5]
 		lastAdding = [[RIGHT, 0]]
 		polygonAtLast = true
@@ -214,6 +217,15 @@ function Draw() {
 		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
 		start = [0, 30]
 		direction = [1, 0]
+	} else if (position == "topFill") {
+		plots = _PlotFlat(3, 1300, 10, 5, 0.01, 0.1, 0)
+		start = [0, 150]
+		direction = [1, 0]
+		lastAdding = [
+			[RIGHT, UP],
+			[LEFT, UP],
+		]
+		polygonAtLast = true
 	}
 
 	let curve = _PlotByVector(start, direction, plots)
