@@ -1,5 +1,10 @@
 SetCanvasSize(1280, 780)
 
+const UP = 0
+const DOWN = GetCanvasSize()[1]
+const LEFT = 0
+const RIGHT = GetCanvasSize()[0]
+
 var textSeed = 0
 var color = document.getElementById("color").value
 var position = document.getElementById("position").value
@@ -187,12 +192,23 @@ function Draw() {
 	let plots = []
 	let start = []
 	let direction = []
+	let lastAdding = []
+	let polygonAtLast = false
 	if (position == "rightFill") {
 		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
 		start = [1230, 0]
 		direction = [0, 1]
+		lastAdding = [
+			[RIGHT, DOWN],
+			[RIGHT, UP],
+		]
+		polygonAtLast = true
 	} else if (position == "rightTopFill") {
-		DrawRightTopFill()
+		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
+		start = [1100, 0]
+		direction = [2 ** -0.5, 2 ** -0.5]
+		lastAdding = [[RIGHT, 0]]
+		polygonAtLast = true
 	} else if (position == "top") {
 		plots = _PlotFlat(3, 1300, 3, 0.5, 0.15, 0.6)
 		start = [0, 30]
@@ -201,7 +217,16 @@ function Draw() {
 
 	let curve = _PlotByVector(start, direction, plots)
 
-	_DrawCurve(curve)
+	if (polygonAtLast) {
+		for (let i = 0; i < lastAdding.length; i++) {
+			curve.push(lastAdding[i])
+		}
+
+		polygon = new Polygon(curve, [0, 0], 0, 1)
+		polygon.Draw()
+	} else {
+		_DrawCurve(curve)
+	}
 }
 
 async function main() {
