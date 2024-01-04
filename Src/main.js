@@ -10,6 +10,10 @@ class Sin {
 		this.angularVelocity = angularVelocity
 		this.phase = phase
 	}
+
+	Calc(x) {
+		return this.amplitude * Math.sin(this.angularVelocity * x + this.phase)
+	}
 }
 
 //https://sbfl.net/blog/2017/06/01/javascript-reproducible-random/
@@ -43,8 +47,7 @@ class Random {
 function Func(x, sins) {
 	let value = 0
 	for (let i = 0; i < sins.length; i++) {
-		value +=
-			sins[i].amplitude * Math.sin(sins[i].angularVelocity * x + sins[i].phase)
+		value += sins[i].Calc(x)
 	}
 
 	return value
