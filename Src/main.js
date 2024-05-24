@@ -199,7 +199,7 @@ function Draw() {
 	let lastAdding = []
 	let polygonAtLast = false
 	if (position == "rightFill") {
-		plots = _PlotFlat(3, 1300, 4, 1, 0.5, 0.3)
+		plots = _PlotFlat(3, 1300, 4, 10, 0.5, 0.3)
 		start = [1200, 0]
 		direction = [0, 1]
 		lastAdding = [
@@ -208,17 +208,17 @@ function Draw() {
 		]
 		polygonAtLast = true
 	} else if (position == "rightTopFill") {
-		plots = _PlotFlat(3, 1300, 10, 7, 0.1, 0.6, 0)
+		plots = _PlotFlat(3, 1300, 10, 10, 0.1, 0.6, 0)
 		start = [1000, 0]
 		direction = [2 ** -0.5, 2 ** -0.5]
 		lastAdding = [[RIGHT, 0]]
 		polygonAtLast = true
 	} else if (position == "top") {
-		plots = _PlotFlat(6, 1300, 4, 1, 0.05, 0.4, 6)
+		plots = _PlotFlat(4, 1300, 6, 2, 0.5, 0.6, 6)
 		start = [0, 100]
 		direction = [1, 0]
 	} else if (position == "topFill") {
-		plots = _PlotFlat(3, 1300, 10, 5, 0.01, 0.1, 0)
+		plots = _PlotFlat(2, 1300, 10, 5, 0.3, 0.1, 0)
 		start = [0, 150]
 		direction = [1, 0]
 		lastAdding = [
