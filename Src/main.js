@@ -9,15 +9,6 @@ var textSeed = 0
 var textSeedUnedited = 0
 var color = document.getElementById("color").value
 var position = document.getElementById("position").value
-var amplitudeMultiplier = parseFloat(document.getElementById("amplitudeMultiplier").value)
-var axisPosition = parseFloat(document.getElementById("axisPosition").value)
-
-const AXIS_POSITION_DEFAULTS = {
-	rightFill: 1200,
-	rightTopFill: 1000,
-	top: 100,
-	topFill: 150,
-}
 
 class Sin {
 	constructor(amplitude, angularVelocity, phase) {
@@ -106,33 +97,6 @@ function OnColorChanged(event) {
 
 function OnPositionChanged(event) {
 	position = event.target.value
-
-	// Update axis position input to the default for this position
-	if (position in AXIS_POSITION_DEFAULTS) {
-		const axisInput = document.getElementById("axisPosition")
-		axisInput.value = AXIS_POSITION_DEFAULTS[position]
-		axisPosition = AXIS_POSITION_DEFAULTS[position]
-	}
-
-	Draw()
-}
-
-function OnAmplitudeMultiplierChanged(event) {
-	amplitudeMultiplier = parseFloat(event.target.value)
-
-	Draw()
-}
-
-function OnAxisPositionChanged(event) {
-	axisPosition = parseFloat(event.target.value)
-
-	Draw()
-}
-
-function OnCanvasSizeChanged() {
-	const w = parseInt(document.getElementById("canvasWidth").value)
-	const h = parseInt(document.getElementById("canvasHeight").value)
-	SetCanvasSize(w, h)
 
 	Draw()
 }
@@ -225,13 +189,9 @@ function _DrawCurve(curve, lineWidth = 3) {
 }
 
 function Draw() {
-	const [canvasW, canvasH] = GetCanvasSize()
-	__HSS_GRAPHICS_PRIVATE.ctx.clearRect(0, 0, canvasW, canvasH)
+	__HSS_GRAPHICS_PRIVATE.ctx.clearRect(0, 0, 1280, 780)
 
 	SetColor(color)
-
-	const RIGHT = canvasW
-	const DOWN = canvasH
 
 	let plots = []
 	let start = []
@@ -240,7 +200,7 @@ function Draw() {
 	let polygonAtLast = false
 	if (position == "rightFill") {
 		plots = _PlotFlat(3, 1300, 4, 10, 0.5, 0.3)
-		start = [axisPosition, 0]
+		start = [1200, 0]
 		direction = [0, 1]
 		lastAdding = [
 			[RIGHT, DOWN],
@@ -249,17 +209,17 @@ function Draw() {
 		polygonAtLast = true
 	} else if (position == "rightTopFill") {
 		plots = _PlotFlat(3, 1300, 10, 10, 0.1, 0.6, 0)
-		start = [axisPosition, 0]
+		start = [1000, 0]
 		direction = [2 ** -0.5, 2 ** -0.5]
 		lastAdding = [[RIGHT, 0]]
 		polygonAtLast = true
 	} else if (position == "top") {
 		plots = _PlotFlat(4, 1300, 6, 2, 0.5, 0.6, 6)
-		start = [0, axisPosition]
+		start = [0, 100]
 		direction = [1, 0]
 	} else if (position == "topFill") {
 		plots = _PlotFlat(2, 1300, 10, 5, 0.3, 0.1, 0)
-		start = [0, axisPosition]
+		start = [0, 150]
 		direction = [1, 0]
 		lastAdding = [
 			[RIGHT, UP],
@@ -267,8 +227,6 @@ function Draw() {
 		]
 		polygonAtLast = true
 	}
-
-	plots = plots.map((v) => v * amplitudeMultiplier)
 
 	let curve = _PlotByVector(start, direction, plots)
 
